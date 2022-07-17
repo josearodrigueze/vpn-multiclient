@@ -1,0 +1,50 @@
+version: '3.9'
+
+x-deploy: &deploy
+  deploy:
+    resources:
+      limits:
+        cpus: '0.1'
+        memory: 50M
+
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "1"
+
+x-openvpn: &openvpn
+  build: .
+  <<: *logging # calling var &logging
+  restart: unless-stopped
+  cap_add:
+    - NET_ADMIN
+  devices:
+    - /dev/net/tun
+  dns:
+    - 1.1.1.1
+
+services:
+  openvpn_1:
+    <<: *openvpn # calling var &openvpn
+    container_name: openvpn_1
+    environment:
+      - OVPN_SERVICE_PROVIDER= # provider list: [ipvanish, surfshark]
+      - OVPN_USER=${OVPN_USER} # Your provider user
+      - OVPN_PASSWORD=${OVPN_PASSWORD} # Your provider password
+      # if you want to select a specific ovpn file, indicate it with this value otherwise it is random
+      - OVPN_FILE= # example ipvanish-PE-Lima-lim-c01.ovpn
+      # Only use if your provider is different to list of OVPN_SERVICE_PROVIDER
+      - OVPN_CONFIGS_URL= # url with .ovpn files or .crt Example https://www.ipvanish.com/software/configs/configs.zip
+
+  test:
+    image: byrnedo/alpine-curl
+    container_name: test
+    command: -s -L 'https://checkip.amazonaws.com'
+    depends_on:
+      openvpn_1:
+        condition: service_healthy
+    network_mode: service:openvpn_1
+    restart: always
+
