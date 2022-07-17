@@ -15,7 +15,7 @@ x-logging: &logging
       max-file: "1"
 
 x-openvpn: &openvpn
-  build: .
+  image: josearodrigueze/vpn-multiclient
   <<: *logging # calling var &logging
   restart: unless-stopped
   cap_add:
@@ -24,19 +24,13 @@ x-openvpn: &openvpn
     - /dev/net/tun
   dns:
     - 1.1.1.1
+  env_file:
+    - .env # with this file config your environment var
 
 services:
   openvpn_1:
     <<: *openvpn # calling var &openvpn
     container_name: openvpn_1
-    environment:
-      - OVPN_SERVICE_PROVIDER= # provider list: [ipvanish, surfshark]
-      - OVPN_USER=${OVPN_USER} # Your provider user
-      - OVPN_PASSWORD=${OVPN_PASSWORD} # Your provider password
-      # if you want to select a specific ovpn file, indicate it with this value otherwise it is random
-      - OVPN_FILE= # example ipvanish-PE-Lima-lim-c01.ovpn
-      # Only use if your provider is different to list of OVPN_SERVICE_PROVIDER
-      - OVPN_CONFIGS_URL= # url with .ovpn files or .crt Example https://www.ipvanish.com/software/configs/configs.zip
 
   test:
     image: byrnedo/alpine-curl
