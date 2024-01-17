@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # echo "Running build_auth_file.sh"
-
 # build auth-file
 AUTH_FILE=.auth.txt
 

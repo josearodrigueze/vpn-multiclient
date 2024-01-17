@@ -1,0 +1,14 @@
+#!/bin/sh
+sleep 10
+
+# so return traffic that went through VPN works
+gw=$(ip route | awk '/default/ {print $3}')
+#echo -e "\nforward ${gw}/ . \n " > config
+
+echo "ip route add to ${LOCAL_NETWORK} via $gw dev eth0"
+#ip route add to ${LOCAL_NETWORK} via $gw dev eth0
+
+cat config
+
+# start
+privoxy --no-daemon

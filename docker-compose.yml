@@ -24,21 +24,14 @@ x-openvpn: &openvpn
     - /dev/net/tun
   dns:
     - 1.1.1.1
-  env_file:
-    - .env # with this file config your environment var
 
 services:
   openvpn_1:
     <<: *openvpn # calling var &openvpn
     container_name: openvpn_1
+    env_file:
+      - .env.example
+    ports:
+      - 8118:8118
 
-  test:
-    image: byrnedo/alpine-curl
-    container_name: test
-    command: -s -L 'https://checkip.amazonaws.com'
-    depends_on:
-      openvpn_1:
-        condition: service_healthy
-    network_mode: service:openvpn_1
-    restart: always
 
