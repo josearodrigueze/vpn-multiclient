@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /app/ovpn
+
 # echo "Running get_ovpn_config.sh"
 
 # check strategy to get ovpn files
@@ -10,7 +12,7 @@ then
 fi
 
 case "${OVPN_SERVICE_PROVIDER}" in
-   "ipvanish") OVPN_CONFIGS_URL=https://www.ipvanish.com/software/configs/configs.zip ;;
+   "ipvanish") OVPN_CONFIGS_URL=https://configs.ipvanish.com/configs/configs.zip ;;
    "surfshark") OVPN_CONFIGS_URL=https://my.surfshark.com/vpn/api/v1/server/configurations ;;
    *) [ -z "${OVPN_CONFIGS_URL}" ] && (echo >&2 "OVPN_CONFIGS_URL required" && exit 1) || echo "" > /dev/null ;;
 esac
@@ -34,6 +36,8 @@ else
 fi
 
 rm ovpn_configs.zip
+
+sed -i '/keysize/d' $OVPN_FILE
 
 # get vpn file server config
 echo "$OVPN_FILE"
