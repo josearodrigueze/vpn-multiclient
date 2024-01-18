@@ -1,0 +1,33 @@
+name: Release to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v2
+
+      - name: Get commit count
+        id: commit-count
+        run: echo "::set-output name=count::$(git rev-list --count HEAD)"
+
+      - name: Calculate version
+        id: calculate-version
+        run: echo "::set-output name=version::2.0.$(echo ${{ steps.commit-count.outputs.count }})"
+
+      - name: Login en Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build y etiqueta la imagen
+        run: |
+          docker build -t josearodrigueze/vpn-multiclient:${{ steps.calculate-version.outputs.version }} .
+          docker push josearodrigueze/vpn-multiclient:${{ steps.calculate-version.outputs.version }}
+
+      - name: Logout de Docker Hub
+        run: docker logout
