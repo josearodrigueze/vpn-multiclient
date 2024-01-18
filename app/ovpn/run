@@ -16,9 +16,7 @@ fi
 echo "[INFO] openvpn --config ${OVPN_FILE} --auth-user-pass ${AUTH_FILE} --mute-replay-warnings --auth-nocache ${OVPN_OPTS}"
 openvpn --config $OVPN_FILE \
   --auth-user-pass $AUTH_FILE \
-  --allow-compression yes \
   --mute-replay-warnings \
-  --script-security 2 \
-  --auth-nocache $OVPN_OPTS
+  --script-security 2 $OVPN_OPTS
 
 

@@ -19,12 +19,22 @@ x-openvpn: &openvpn
     - 1.1.1.1
 
 services:
-  openvpn_1:
+  vpn_1:
     <<: *openvpn # calling var &openvpn
-    container_name: openvpn_1
     env_file:
       - .env.example
+    environment:
+      #- OVPN_FILE=co-bog.prod.surfshark.com_udp.ovpn
+      #- SERVER_COUNTRY=CO
+      - SERVER_CITY=Bog
     ports:
       - 127.0.0.1:8118:8118
+
+#  vpn_2:
+#    <<: *openvpn # calling var &openvpn
+#    env_file:
+#      - .secrets/surfshark.env
+#    ports:
+#      - 127.0.0.1:8119:8118
 
 

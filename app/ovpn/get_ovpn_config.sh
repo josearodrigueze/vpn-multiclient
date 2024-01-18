@@ -23,19 +23,12 @@ rm -rf *.ovpn *.crt ovpn_configs.zip
 # echo "Download ovpn from ${$OVPN_CONFIGS_URL}"
 curl -s -o ovpn_configs.zip $OVPN_CONFIGS_URL
 
-if [ -z "$OVPN_FILE" ]
-then
-  # echo "Unzip ovpns"
-  unzip -q ovpn_configs.zip
-
-  OVPN_FILE=$(find . -type f -name '*.ovpn' | shuf -n 1)
-else
-  # echo "extract selected file ${OVPN_FILE}"
-  unzip -p ovpn_configs.zip $OVPN_FILE > $OVPN_FILE
-  for zipfiles in ovpn_configs.zip; do unzip -xo "$zipfiles" '*.crt' ; done > /dev/null
+if [ -z "$OVPN_FILE" ]; then
+  OVPN_FILE=$(/app/ovpn/select_server.sh)
 fi
 
-rm ovpn_configs.zip
+unzip -p ovpn_configs.zip $OVPN_FILE > $OVPN_FILE
+for zipfiles in ovpn_configs.zip; do unzip -xo "$zipfiles" '*.crt' ; done > /dev/null
 
 sed -i '/keysize/d' $OVPN_FILE
 
