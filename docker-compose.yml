@@ -30,11 +30,3 @@ services:
     ports:
       - 127.0.0.1:8118:8118
 
-#  vpn_2:
-#    <<: *openvpn # calling var &openvpn
-#    env_file:
-#      - .secrets/surfshark.env
-#    ports:
-#      - 127.0.0.1:8119:8118
-
-
