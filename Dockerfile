@@ -22,11 +22,11 @@ ARG OVPN_OPTS
 ARG CREATE_TUN_DEVICE
 
 RUN apk add --update --no-cache openvpn unzip curl privoxy runit jq
-
-HEALTHCHECK --interval=60s --timeout=10s --start-period=30s CMD curl -s https://api.surfshark.com/v1/server/user | grep '"secured":true'
-
 COPY app /app
-RUN find /app/ovpn -name *.sh | xargs chmod u+x
-RUN find /app -name run | xargs chmod u+x
 
+RUN find /app -name *.sh | xargs chmod u+x && \
+    find /app -name run | xargs chmod u+x
+
+HEALTHCHECK --interval=60s --timeout=15s --start-period=20s CMD curl -sx localhost:8118 https://checkip.amazonaws.com | grep "\."
 CMD ["runsvdir", "/app"]
+

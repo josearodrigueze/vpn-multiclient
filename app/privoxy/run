@@ -8,7 +8,5 @@ gw=$(ip route | awk '/default/ {print $3}')
 echo "ip route add to ${LOCAL_NETWORK} via $gw dev eth0"
 #ip route add to ${LOCAL_NETWORK} via $gw dev eth0
 
-cat config
-
 # start
 privoxy --no-daemon
