@@ -54,7 +54,7 @@ x-openvpn: &openvpn
   dns: # optional
     - 1.1.1.1
   env_file: # for load your env variables
-    - .env # youu can use .env.example
+    - .env # you can use .env.example
 
 services:
   vpn_multiclient1:
@@ -75,10 +75,10 @@ services:
 ```
 
 # WPI
-
 - More specific documentation
 - Support for more providers
 - Add sock5 support
+- Document privoxy support
 
 
 # You want to help me?
