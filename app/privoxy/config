@@ -1,10 +1,15 @@
 confdir /app/privoxy
 listen-address  0.0.0.0:8118
 
-compression-level 2
+#compression-level 2
 
 debug   1    # show each GET/POST/CONNECT request
 debug   4096 # Startup banner and warnings
+
+forward 10.*.*.*/ .
+forward 127.*.*.*/ .
+forward 192.168.*.*/ .
+forward localhost/ .
 
 forward 172.16.*.*/ .
 forward 172.17.*.*/ .
@@ -22,7 +27,5 @@ forward 172.28.*.*/ .
 forward 172.29.*.*/ .
 forward 172.30.*.*/ .
 forward 172.31.*.*/ .
-forward 10.*.*.*/ .
-forward 192.168.*.*/ .
-forward 127.*.*.*/ .
-forward localhost/ .
+accept-intercepted-requests 1
+

@@ -1,12 +1,5 @@
 version: '3.9'
 
-x-deploy: &deploy
-  deploy:
-    resources:
-      limits:
-        cpus: '0.1'
-        memory: 50M
-
 x-logging: &logging
   logging:
     driver: "json-file"
@@ -32,6 +25,6 @@ services:
     env_file:
       - .env.example
     ports:
-      - 8118:8118
+      - 127.0.0.1:8118:8118
 
 
