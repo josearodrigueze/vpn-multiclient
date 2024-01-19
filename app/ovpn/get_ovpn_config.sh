@@ -11,17 +11,14 @@ then
     exit 1
 fi
 
-case "${OVPN_SERVICE_PROVIDER}" in
-   "ipvanish") OVPN_CONFIGS_URL=https://configs.ipvanish.com/configs/configs.zip ;;
-   "surfshark") OVPN_CONFIGS_URL=https://my.surfshark.com/vpn/api/v1/server/configurations ;;
-   *) [ -z "${OVPN_CONFIGS_URL}" ] && (echo >&2 "OVPN_CONFIGS_URL required" && exit 1) || echo "" > /dev/null ;;
-esac
-
 # remove file from current dir
 rm -rf *.ovpn *.crt ovpn_configs.zip
 
-# echo "Download ovpn from ${$OVPN_CONFIGS_URL}"
-curl -s -o ovpn_configs.zip $OVPN_CONFIGS_URL
+case "${OVPN_SERVICE_PROVIDER}" in
+   "ipvanish") OVPN_CONFIGS_URL=https://configs.ipvanish.com/configs/configs.zip && curl -s -o ovpn_configs.zip $OVPN_CONFIGS_URL ;;
+   "surfshark") cp /app/ovpn/surfshark_config.zip ovpn_configs.zip ;;
+   *) [ -z "${OVPN_CONFIGS_URL}" ] && (echo >&2 "OVPN_CONFIGS_URL required" && exit 1) || echo "" > /dev/null ;;
+esac
 
 if [ -z "$OVPN_FILE" ]; then
   OVPN_FILE=$(/app/ovpn/select_server.sh)
