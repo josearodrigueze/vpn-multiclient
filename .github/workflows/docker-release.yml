@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v2
@@ -24,9 +28,13 @@ jobs:
       - name: Login en Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set up QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
       - name: Build y etiqueta la imagen
         run: |
-          docker build -t josearodrigueze/vpn-multiclient:${{ steps.calculate-version.outputs.version }} .
+          docker buildx create --use
+          docker buildx build --platform ${{ matrix.platform }} -t josearodrigueze/vpn-multiclient:${{ steps.calculate-version.outputs.version }} .
           docker push josearodrigueze/vpn-multiclient:${{ steps.calculate-version.outputs.version }}
 
       - name: Logout de Docker Hub
