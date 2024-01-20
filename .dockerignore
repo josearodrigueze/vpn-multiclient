@@ -1,10 +1,12 @@
 .idea/
+.secrets/
+.github/
+
 .dockerignore
 .env
 .gitignore
-docker-compose.yml
 Dockerfile
+docker-compose.yml
 vpn-multiclient.iml
 README.md
-.secrets/
-/ecr_push.sh
+ecr_push.sh
