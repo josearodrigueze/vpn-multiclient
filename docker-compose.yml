@@ -9,6 +9,7 @@ x-logging: &logging
 
 x-openvpn: &openvpn
   image: josearodrigueze/vpn-multiclient
+  #build: .
   <<: *logging # calling var &logging
   restart: unless-stopped
   cap_add:

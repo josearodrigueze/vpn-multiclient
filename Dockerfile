@@ -21,7 +21,7 @@ ARG OVPN_SERVICE_PROVIDER
 ARG OVPN_OPTS
 ARG CREATE_TUN_DEVICE
 
-RUN apk add --update --no-cache curl
+RUN apk add --update --no-cache openvpn unzip curl privoxy runit
 COPY app /app
 
 RUN find /app -name *.sh | xargs chmod u+x && \
