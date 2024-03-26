@@ -16,7 +16,7 @@ rm -rf *.ovpn *.crt ovpn_configs.zip
 
 case "${OVPN_SERVICE_PROVIDER}" in
    "ipvanish") OVPN_CONFIGS_URL=https://configs.ipvanish.com/configs/configs.zip && curl -s -o ovpn_configs.zip $OVPN_CONFIGS_URL ;;
-   "surfshark") cp /app/ovpn/surfshark_config.zip ovpn_configs.zip ;;
+   "surfshark") OVPN_CONFIGS_URL=https://my.surfshark.com/vpn/api/v1/server/configurations && curl -s -o ovpn_configs.zip $OVPN_CONFIGS_URL ;;
    *) [ -z "${OVPN_CONFIGS_URL}" ] && (echo >&2 "OVPN_CONFIGS_URL required" && exit 1) || echo "" > /dev/null ;;
 esac
 
